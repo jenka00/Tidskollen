@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20220403113125_HoursWorkedInTimeReport.cs" />
+    <Compile Remove="Migrations\20220403113125_HoursWorkedInTimeReport.Designer.cs" />
+    <Compile Remove="Migrations\20220403113717_UpdateHoursWorked.cs" />
+    <Compile Remove="Migrations\20220403113717_UpdateHoursWorked.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.23" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.23" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.23">
       <PrivateAssets>all</PrivateAssets>

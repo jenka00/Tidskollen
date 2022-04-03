@@ -55,6 +55,22 @@ namespace Tidskollen.API.Model
                 ProjectId = 2,
                 ProjectName = "Tulpaner"
             });
+            //modelBuilder.Entity<TimeReport>().HasData(new TimeReport
+            //{
+            //    ID = 1,
+            //    EmployeeId = 1,
+            //    CheckIn = DateTime.Parse("2022-01-07,08:05:00"),
+            //    CheckOut = DateTime.Parse("2022-01-07,17:02:00"),
+            //    CheckStatus = false
+            //});
+            //modelBuilder.Entity<TimeReport>().HasData(new TimeReport
+            //{
+            //    ID = 2,
+            //    EmployeeId = 4,
+            //    CheckIn = new DateTime(2022,01,07,08,00,00),
+            //    CheckOut = new DateTime(2022, 01, 07, 16, 10, 00),
+            //    CheckStatus = false
+            //});
         }
     }
 }

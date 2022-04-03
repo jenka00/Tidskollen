@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tidskollen.API.Model;
 
 namespace Tidskollen.API.Migrations
 {
     [DbContext(typeof(TidDbContext))]
-    partial class TidDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220401083030_ValuesInModelbuilder")]
+    partial class ValuesInModelbuilder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,6 +146,16 @@ namespace Tidskollen.API.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("TimeReports");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            CheckIn = new DateTime(2022, 1, 7, 8, 5, 0, 0, DateTimeKind.Unspecified),
+                            CheckOut = new DateTime(2022, 1, 7, 17, 2, 0, 0, DateTimeKind.Unspecified),
+                            CheckStatus = false,
+                            EmployeeId = 1
+                        });
                 });
 
             modelBuilder.Entity("Tidskollen.Models.EmployeeProject", b =>

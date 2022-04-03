@@ -14,7 +14,7 @@ namespace Tidskollen.Models
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
 
         public ICollection<EmployeeProject> EmployeeProject { get; set; }

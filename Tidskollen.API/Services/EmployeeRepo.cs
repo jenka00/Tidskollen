@@ -37,12 +37,12 @@ namespace Tidskollen.API
 
         public async Task<IEnumerable<Employee>> GetAll()
         {
-            return await _tidContext.Employees.ToListAsync();
+            return await _tidContext.Employees.Include(ep => ep.EmployeeProject).ToListAsync();
         }
 
         public async Task<Employee> GetSingle(int id)
         {
-            return await _tidContext.Employees.FirstOrDefaultAsync(e => e.EmployeeId == id);
+            return await _tidContext.Employees.Include(ep => ep.EmployeeProject).FirstOrDefaultAsync(e => e.EmployeeId == id);
         }
 
         public async Task<Employee> Update(Employee employee)

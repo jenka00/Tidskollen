@@ -13,6 +13,6 @@ namespace Tidskollen.Models
 
         public string ProjectName { get; set; }
 
-        public ICollection<EmployeeProject> EmployeeProjects { get; set; }
+        public ICollection<EmployeeProject> EmployeeProject { get; set; }
     }
 }

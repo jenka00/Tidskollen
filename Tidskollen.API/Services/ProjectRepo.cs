@@ -15,6 +15,17 @@ namespace Tidskollen.API.Services
         {
             _tidContext = tidContext;
         }
+
+        public async Task<IEnumerable<Project>> GetAll()
+        {
+            return await _tidContext.Projects.Include(ep => ep.EmployeeProject).ToListAsync();
+        }
+
+        public async Task<Project> GetSingle(int id)
+        {
+            return await _tidContext.Projects.Include(ep => ep.EmployeeProject)
+                .FirstOrDefaultAsync(p => p.ProjectId == id);
+        }
         public async Task<Project> Add(Project newProject)
         {
             var result = await _tidContext.Projects.AddAsync(newProject);
@@ -32,16 +43,6 @@ namespace Tidskollen.API.Services
                 return result;
             }
             return null;
-        }
-
-        public async Task<IEnumerable<Project>> GetAll()
-        {
-            return await _tidContext.Projects.ToListAsync();
-        }
-
-        public async Task<Project> GetSingle(int id)
-        {
-            return await _tidContext.Projects.FirstOrDefaultAsync(p => p.ProjectId == id);
         }
 
         public async Task<Project> Update(Project project)
