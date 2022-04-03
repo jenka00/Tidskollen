@@ -14,10 +14,12 @@ namespace Tidskollen.API.Controllers
     public class TimeReportsController : ControllerBase
     {
         private ITidskollen<TimeReport> _tidskollen;
+        private ITimeReport _tid;
 
-        public TimeReportsController(ITidskollen<TimeReport> tidskollen)
+        public TimeReportsController(ITidskollen<TimeReport> tidskollen, ITimeReport tid)
         {
             _tidskollen = tidskollen;
+            _tid = tid; 
         }
 
         [HttpGet]
@@ -52,6 +54,12 @@ namespace Tidskollen.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Oväntat fel har uppstått i hämtningen av data från databas.");
             }
+        }
+        [HttpGet("{workperiod}")]
+        public async Task<ActionResult<TimeReport>> WorkPeriod(int empId, DateTime startDate, DateTime endDate)
+        {
+            var result = await _tid.GetWorkHours(empId, startDate, endDate);
+            return Ok(result);
         }
         [HttpPost]
         public async Task<ActionResult<TimeReport>> AddTimeReport(TimeReport newTimeReport)

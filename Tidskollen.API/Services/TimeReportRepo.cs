@@ -63,29 +63,28 @@ namespace Tidskollen.API.Services
             return null;
         }
 
-        //public Task GetWorkHours(Employee employee, DateTime startDate, DateTime endDate)
-        //{
-        //    var result = _tidContext.TimeReports(e => e.EmployeeId = employee.EmployeeId).F
-        //}
-        ////public Task GetWorkHours(Employee employee, DateTime startDate, DateTime endDate)
-        ////{
-        ////    throw new NotImplementedException();
-        ////}
+        public async Task<IEnumerable<TimeReport>> GetWorkHours(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            var reportsToGet = (from tr in _tidContext.TimeReports
+                                where tr.EmployeeId == employeeId && tr.CheckIn >= startDate && tr.CheckOut <= endDate
+                                select tr).ToListAsync();
+            return await reportsToGet;  
+        }
 
         //public TimeReport CheckIn(TimeReport newTime, int empId)
         //{
         //     throw new NotImplementedException();
-            //var timeRepToAdd = (from time in _tidContext.TimeReports
-            //                          select new TimeReport
-            //                          {
-            //                              CheckIn = DateTime.Now,
-            //                              CheckStatus = true,
-            //                              EmployeeId = empId
-            //                          }).ToList();
-            
-            //_tidContext.AddAsync(timeRepToAdd);
-            //_tidContext.SaveChangesAsync();
-            //return timeRepToAdd;
+        //var timeRepToAdd = (from time in _tidContext.TimeReports
+        //                          select new TimeReport
+        //                          {
+        //                              CheckIn = DateTime.Now,
+        //                              CheckStatus = true,
+        //                              EmployeeId = empId
+        //                          }).ToList();
+
+        //_tidContext.AddAsync(timeRepToAdd);
+        //_tidContext.SaveChangesAsync();
+        //return timeRepToAdd;
         //}
     }
 }

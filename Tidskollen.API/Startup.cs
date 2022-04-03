@@ -39,7 +39,7 @@ namespace Tidskollen.API
             services.AddScoped<ITidskollen<Employee>, EmployeeRepo>();                    
             services.AddScoped<ITidskollen<Project>, ProjectRepo>();
             services.AddScoped<ITidskollen<TimeReport>, TimeReportRepo>();
-            //services.AddScoped<ITimeReport, TimeReportRepo>();
+            services.AddScoped<ITimeReport, TimeReportRepo>();
             services.AddScoped<ITidskollen<EmployeeProject>, EmployeeProjectRepo>();
         }
 
