@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tidskollen.API.Dtos;
 using Tidskollen.API.Services;
 using Tidskollen.Models;
 
@@ -14,18 +16,21 @@ namespace Tidskollen.API.Controllers
     public class ProjectsController : ControllerBase
     {
         private ITidskollen<Project> _tidskollen;
+        private IMapper _mapper;
 
-        public ProjectsController(ITidskollen<Project> tidskollen)
+        public ProjectsController(ITidskollen<Project> tidskollen, IMapper mapper)
         {
             _tidskollen = tidskollen;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProjects()
+        public async Task<ActionResult<IEnumerable<ProjectReadDto>>> GetAllProjects()
         {
             try
             {
-                return Ok(await _tidskollen.GetAll());
+                var projectsToGet = await _tidskollen.GetAll();
+                return Ok(_mapper.Map<IEnumerable<ProjectReadDto>>(projectsToGet));
             }
             catch (Exception)
             {
@@ -35,7 +40,7 @@ namespace Tidskollen.API.Controllers
             }
         }
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Project>> GetProject(int id)
+        public async Task<ActionResult<ProjectReadDto>> GetProject(int id)
         {
             try
             {
@@ -44,7 +49,7 @@ namespace Tidskollen.API.Controllers
                 {
                     return NotFound();
                 }
-                return projectToGet;
+                return Ok(_mapper.Map<ProjectReadDto>(projectToGet));
             }
             catch (Exception)
             {
@@ -54,17 +59,18 @@ namespace Tidskollen.API.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<Project>> AddProject(Project newProject)
+        public async Task<ActionResult<ProjectReadDto>> AddProject(ProjectCreateDto newProjectCreateDto)
         {
             try
             {
-                if (newProject == null)
+                if (newProjectCreateDto == null)
                 {
                     return BadRequest();
                 }
-                var projectToCreate = await _tidskollen.Add(newProject);
-                return CreatedAtAction(nameof(GetProject), new 
-                { id = projectToCreate.ProjectId }, projectToCreate);
+                var projectToCreate = _mapper.Map<Project>(newProjectCreateDto);
+                await _tidskollen.Add(projectToCreate);
+                var projectReadDto = _mapper.Map<ProjectReadDto>(projectToCreate);
+                return CreatedAtAction(nameof(GetProject), new { id = projectReadDto.ProjectId }, projectReadDto);
             }
             catch (Exception)
             {

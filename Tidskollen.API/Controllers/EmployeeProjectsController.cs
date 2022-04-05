@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tidskollen.API.Dtos;
 using Tidskollen.API.Services;
 using Tidskollen.Models;
 
@@ -14,17 +16,20 @@ namespace Tidskollen.API.Controllers
     public class EmployeeProjectsController : ControllerBase
     {
         private ITidskollen<EmployeeProject> _tidskollen;
+        private IMapper _mapper;
 
-        public EmployeeProjectsController(ITidskollen<EmployeeProject> tidskollen)
+        public EmployeeProjectsController(ITidskollen<EmployeeProject> tidskollen, IMapper mapper)
         {
             _tidskollen = tidskollen;
+            _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllEmpPro()
+        public async Task<ActionResult<IEnumerable<EmployeeProjectReadDto>>> GetAllEmpPro()
         {
             try
             {
-                return Ok(await _tidskollen.GetAll());
+                var empProjToGet = await _tidskollen.GetAll();
+                return Ok(_mapper.Map<IEnumerable<EmployeeProjectReadDto>>(empProjToGet));
             }
             catch (Exception)
             {
@@ -34,7 +39,7 @@ namespace Tidskollen.API.Controllers
             }
         }
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<EmployeeProject>> GetEmpPro(int id)
+        public async Task<ActionResult<EmployeeProjectReadDto>> GetEmpPro(int id)
         {
             try
             {
@@ -43,7 +48,7 @@ namespace Tidskollen.API.Controllers
                 {
                     return NotFound();
                 }
-                return empProToGet;
+                return Ok(_mapper.Map<EmployeeProjectReadDto>(empProToGet));
             }
             catch (Exception)
             {

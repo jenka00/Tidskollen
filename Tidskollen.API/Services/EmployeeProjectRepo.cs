@@ -38,7 +38,9 @@ namespace Tidskollen.API.Services
 
         public async Task<IEnumerable<EmployeeProject>> GetAll()
         {
-            return await _tidContext.EmployeeProjects.ToListAsync();
+            return await _tidContext.EmployeeProjects
+                .Include(ep => ep.Employee)
+                .Include(ep => ep.Project).ToListAsync();
         }
 
         public Task<IEnumerable<EmployeeProject>> GetByName(string name)
@@ -48,7 +50,10 @@ namespace Tidskollen.API.Services
 
         public async Task<EmployeeProject> GetSingle(int id)
         {
-            return await _tidContext.EmployeeProjects.FirstOrDefaultAsync(p => p.EmployeeProjectId == id);
+            return await _tidContext.EmployeeProjects
+                    .Include(ep => ep.Employee)
+                    .Include(ep => ep.Project)
+                    .FirstOrDefaultAsync(p => p.EmployeeProjectId == id);        
         }
 
         public async Task<EmployeeProject> Update(EmployeeProject Entity)
