@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tidskollen.API.Dtos;
 using Tidskollen.API.Services;
 using Tidskollen.Models;
 
@@ -15,19 +17,22 @@ namespace Tidskollen.API.Controllers
     {
         private ITidskollen<TimeReport> _tidskollen;
         private ITimeReport _tid;
+        private IMapper _mapper;
 
-        public TimeReportsController(ITidskollen<TimeReport> tidskollen, ITimeReport tid)
+        public TimeReportsController(ITidskollen<TimeReport> tidskollen, ITimeReport tid, IMapper mapper)
         {
             _tidskollen = tidskollen;
-            _tid = tid; 
+            _tid = tid;
+            _mapper = mapper;
         }
-
+        //Using TimerReportsReadDto to show all timereports with limitations in employee information) 
         [HttpGet]
-        public async Task<IActionResult> GetAllTimeReports()
+        public async Task<ActionResult<IEnumerable<TimeReportsReadDto>>> GetAllTimeReports()
         {
             try
             {
-                return Ok(await _tidskollen.GetAll());
+                var timeReportToGet = await _tidskollen.GetAll();
+                return Ok(_mapper.Map<IEnumerable<TimeReportsReadDto>>(timeReportToGet));
             }
             catch (Exception)
             {
@@ -36,8 +41,9 @@ namespace Tidskollen.API.Controllers
                     "Oväntat fel har uppstått i hämtningen av data från databas.");
             }
         }
+        //Using TimerReportsReadDto to show single timereports with limitations in employee information) 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<TimeReport>> GetTimeReport(int id)
+        public async Task<ActionResult<TimeReportsReadDto>> GetTimeReport(int id)
         {
             try
             {
@@ -46,7 +52,7 @@ namespace Tidskollen.API.Controllers
                 {
                     return NotFound();
                 }
-                return trToGet;
+                return Ok(_mapper.Map<TimeReportsReadDto>(trToGet));
             }
             catch (Exception)
             {
@@ -96,16 +102,18 @@ namespace Tidskollen.API.Controllers
             }            
         }
         [HttpPost]
-        public async Task<ActionResult<TimeReport>> AddTimeReport(TimeReport newTimeReport)
+        public async Task<ActionResult<TimeReportsReadDto>> AddTimeReport(TimeReportsCreateDto newTimeReportsCreateDto)
         {
             try
             {
-                if (newTimeReport == null)
+                if (newTimeReportsCreateDto == null)
                 {
                     return BadRequest();
                 }
-                var trToCreate = await _tidskollen.Add(newTimeReport);
-                return CreatedAtAction(nameof(GetTimeReport), new { id = trToCreate.ID }, trToCreate);
+                var trToCreate = _mapper.Map<TimeReport>(newTimeReportsCreateDto);
+                await _tidskollen.Add(trToCreate);
+                var timeReportReadDto = _mapper.Map<TimeReportsReadDto>(trToCreate);
+                return CreatedAtAction(nameof(GetTimeReport), new { id = timeReportReadDto.ID }, timeReportReadDto);
             }
             catch (Exception)
             {
@@ -115,7 +123,7 @@ namespace Tidskollen.API.Controllers
             }
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<TimeReport>> UpdateTimeReport(int id, TimeReport updateTR)
+        public async Task<ActionResult<TimeReportsReadDto>> UpdateTimeReport(int id, TimeReport updateTR)
         {
             try
             {
@@ -129,7 +137,7 @@ namespace Tidskollen.API.Controllers
                 {
                     return NotFound($"Tidsrapporten med ID-nummer {id} saknas.");
                 }
-                return await _tidskollen.Update(updateTR);
+                return Ok(_mapper.Map<TimeReportsReadDto>(updateTR));
             }
             catch (Exception)
             {
@@ -138,7 +146,7 @@ namespace Tidskollen.API.Controllers
             }
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TimeReport>> DeleteTimeReport(int id)
+        public async Task<ActionResult<TimeReportsReadDto>> DeleteTimeReport(int id)
         {
             try
             {
@@ -147,7 +155,8 @@ namespace Tidskollen.API.Controllers
                 {
                     return NotFound($"Misslyckat försök att hitta tidsrapport med ID-nummer {id}.");
                 }
-                return await _tidskollen.Delete(id);
+                await _tidskollen.Delete(id);
+                return Ok(_mapper.Map<TimeReportsReadDto>(trToDelete));
             }
             catch (Exception)
             {
@@ -155,5 +164,19 @@ namespace Tidskollen.API.Controllers
                     $"Misslyckat försök att ta bort tidsrapport med id {id}.");
             }
         }
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllTimeReports()
+        //{
+        //    try
+        //    {
+        //        return Ok(await _tidskollen.GetAll());
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            "Oväntat fel har uppstått i hämtningen av data från databas.");
+        //    }
+        //}
     }
 }

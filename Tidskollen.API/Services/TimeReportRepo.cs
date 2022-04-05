@@ -19,7 +19,7 @@ namespace Tidskollen.API.Services
 
         public async Task<IEnumerable<TimeReport>> GetAll()
         {
-            return await _tidContext.TimeReports.ToListAsync();
+            return await _tidContext.TimeReports.Include(e=>e.Employee).ToListAsync();
         }
 
         public async Task<TimeReport> GetSingle(int id)

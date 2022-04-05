@@ -8,12 +8,12 @@ using Tidskollen.Models;
 
 namespace Tidskollen.API.Profiles
 {
-    public class EmployeesProfile : Profile
+    public class TimeReportsProfile : Profile
     {
-        public EmployeesProfile()
+        public TimeReportsProfile()
         {
-            CreateMap<Employee, EmployeeReadDto>();
-            CreateMap<EmployeeCreateDto, Employee>();
+            CreateMap<TimeReport, TimeReportsReadDto>();
+            CreateMap<TimeReportsCreateDto, TimeReport>();
         }
     }
 }

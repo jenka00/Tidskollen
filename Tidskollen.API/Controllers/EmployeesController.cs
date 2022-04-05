@@ -24,21 +24,6 @@ namespace Tidskollen.API.Controllers
             _mapper = mapper;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAllEmployees()
-        //{
-        //    try
-        //    {
-        //        return Ok(await _tidskollen.GetAll());
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        return StatusCode(StatusCodes.Status500InternalServerError, 
-        //            "Oväntat fel har uppstått i hämtningen av data från databas.");
-        //    }
-        //}
-        
         //Using EmployeeReadDto to show a list of all employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeReadDto>>> GetAllEmployees()
@@ -55,18 +40,18 @@ namespace Tidskollen.API.Controllers
                     "Oväntat fel har uppstått i hämtningen av data från databas.");
             }
         }
-
+        //Using EmployeeReadDto to show a list of a single employee
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public async Task<ActionResult<EmployeeReadDto>> GetEmployee(int id)
         {
             try
             {
                 var empToGet = await _tidskollen.GetSingle(id);
-                if(empToGet == null)
+                if (empToGet == null)
                 {
                     return NotFound();
                 }
-                return empToGet;
+                return Ok(_mapper.Map<EmployeeReadDto>(empToGet));
             }
             catch (Exception)
             {
@@ -76,17 +61,19 @@ namespace Tidskollen.API.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Employee>> AddEmployee(Employee newEmployee)
+        [HttpPost] //Using EmployeeCreateDto to create new employee and EmployeeReadDto to print show new employee
+        public async Task<ActionResult<EmployeeReadDto>> AddEmployee(EmployeeCreateDto newEmployeeCreateDto)
         {
             try
-            {                
-                if (newEmployee == null)
+            {
+                if (newEmployeeCreateDto == null)
                 {
                     return BadRequest();
                 }
-                var empToCreate = await _tidskollen.Add(newEmployee);
-                return CreatedAtAction(nameof(GetEmployee), new { id = empToCreate.EmployeeId }, empToCreate);
+                var empToCreate = _mapper.Map<Employee>(newEmployeeCreateDto);
+                await _tidskollen.Add(empToCreate);
+                var employeeReadDto = _mapper.Map<EmployeeReadDto>(empToCreate);
+                return CreatedAtAction(nameof(GetEmployee), new { id = employeeReadDto.EmployeeId }, employeeReadDto);
             }
             catch (Exception)
             {
@@ -95,6 +82,7 @@ namespace Tidskollen.API.Controllers
                     "Misslyckat försök att skapa ny medarbetare.");
             }
         }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<Employee>> UpdateEmployee(int id, Employee updateEmp)
         {
@@ -138,5 +126,60 @@ namespace Tidskollen.API.Controllers
                     "medarbetaren.");
             }            
         }
-    }    
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllEmployees()
+        //{
+        //    try
+        //    {
+        //        return Ok(await _tidskollen.GetAll());
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        return StatusCode(StatusCodes.Status500InternalServerError, 
+        //            "Oväntat fel har uppstått i hämtningen av data från databas.");
+        //    }
+        //}
+
+        //[HttpGet("{id:int}")]
+        //public async Task<ActionResult<Employee>> GetEmployee(int id)
+        //{
+        //    try
+        //    {
+        //        var empToGet = await _tidskollen.GetSingle(id);
+        //        if(empToGet == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        return empToGet;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            "Oväntat fel har uppstått i hämtningen av data från databas.");
+        //    }
+        //}
+
+        //[HttpPost]
+        //public async Task<ActionResult<Employee>> AddEmployee(Employee newEmployee)
+        //{
+        //    try
+        //    {
+        //        if (newEmployee == null)
+        //        {
+        //            return BadRequest();
+        //        }
+        //        var empToCreate = await _tidskollen.Add(newEmployee);
+        //        return CreatedAtAction(nameof(GetEmployee), new { id = empToCreate.EmployeeId }, empToCreate);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            "Misslyckat försök att skapa ny medarbetare.");
+        //    }
+        //}
+    }
 }
