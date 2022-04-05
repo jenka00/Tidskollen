@@ -40,6 +40,11 @@ namespace Tidskollen.API
             return await _tidContext.Employees.Include(ep => ep.EmployeeProject).ToListAsync();
         }
 
+        public Task<IEnumerable<Employee>> GetByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Employee> GetSingle(int id)
         {
             return await _tidContext.Employees.Include(ep => ep.EmployeeProject).FirstOrDefaultAsync(e => e.EmployeeId == id);

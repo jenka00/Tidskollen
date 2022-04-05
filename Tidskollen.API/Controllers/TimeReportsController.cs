@@ -58,8 +58,42 @@ namespace Tidskollen.API.Controllers
         [HttpGet("{workperiod}")]
         public async Task<ActionResult<TimeReport>> WorkPeriod(int empId, DateTime startDate, DateTime endDate)
         {
-            var result = await _tid.GetWorkHours(empId, startDate, endDate);
-            return Ok(result);
+            try
+            {
+                var result = await _tid.GetWorkHours(empId, startDate, endDate);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                     "Oväntat fel har uppstått i hämtningen av data från databas.");
+            }           
+        }
+        //Get by employeeId, override the RoutePrefix attribute
+        [Route("~/api/employees/{employeeId:int}/timereports")]
+        [HttpGet]      
+        public async Task<ActionResult<TimeReport>> GetByEmployee(int employeeId)
+        {
+            try
+            {
+                var result = await _tid.GetByEmpID(employeeId);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Oväntat fel har uppstått i hämtningen av data från databas.");
+            }            
         }
         [HttpPost]
         public async Task<ActionResult<TimeReport>> AddTimeReport(TimeReport newTimeReport)
@@ -96,7 +130,6 @@ namespace Tidskollen.API.Controllers
                     return NotFound($"Tidsrapporten med ID-nummer {id} saknas.");
                 }
                 return await _tidskollen.Update(updateTR);
-
             }
             catch (Exception)
             {
@@ -105,7 +138,6 @@ namespace Tidskollen.API.Controllers
             }
         }
         [HttpDelete("{id}")]
-
         public async Task<ActionResult<TimeReport>> DeleteTimeReport(int id)
         {
             try

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tidskollen.API.Dtos;
 using Tidskollen.API.Services;
 using Tidskollen.Models;
 
@@ -14,27 +16,46 @@ namespace Tidskollen.API.Controllers
     public class EmployeesController : ControllerBase
     {
         private ITidskollen<Employee> _tidskollen;
+        private IMapper _mapper;
 
-        public EmployeesController(ITidskollen<Employee> tidskollen)
+        public EmployeesController(ITidskollen<Employee> tidskollen, IMapper mapper)
         {
             _tidskollen = tidskollen;
+            _mapper = mapper;
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllEmployees()
+        //{
+        //    try
+        //    {
+        //        return Ok(await _tidskollen.GetAll());
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        return StatusCode(StatusCodes.Status500InternalServerError, 
+        //            "Oväntat fel har uppstått i hämtningen av data från databas.");
+        //    }
+        //}
+        
+        //Using EmployeeReadDto to show a list of all employees
         [HttpGet]
-        public async Task<IActionResult> GetAllEmployees()
+        public async Task<ActionResult<IEnumerable<EmployeeReadDto>>> GetAllEmployees()
         {
             try
             {
-                return Ok(await _tidskollen.GetAll());
+                var employeesToGet = await _tidskollen.GetAll();
+                return Ok(_mapper.Map<IEnumerable<EmployeeReadDto>>(employeesToGet));
             }
             catch (Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, 
+                return StatusCode(StatusCodes.Status500InternalServerError,
                     "Oväntat fel har uppstått i hämtningen av data från databas.");
             }
         }
-        
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {

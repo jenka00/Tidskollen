@@ -58,5 +58,10 @@ namespace Tidskollen.API.Services
             }
             return null;
         }
+
+        public Task<IEnumerable<Project>> GetByName(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

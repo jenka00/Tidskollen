@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tidskollen.API.Model;
 
 namespace Tidskollen.API.Migrations
 {
     [DbContext(typeof(TidDbContext))]
-    partial class TidDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220405073101_PasswordInEmployeeModel")]
+    partial class PasswordInEmployeeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,16 +40,37 @@ namespace Tidskollen.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordConfirmation")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("EmployeeId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeId = 1,
+                            DateOfBirth = new DateTime(1990, 3, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Therese",
+                            LastName = "Brorsson"
+                        },
+                        new
+                        {
+                            EmployeeId = 2,
+                            DateOfBirth = new DateTime(1987, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Julia",
+                            LastName = "Karlsson"
+                        },
+                        new
+                        {
+                            EmployeeId = 3,
+                            DateOfBirth = new DateTime(1985, 12, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Louisa",
+                            LastName = "Stark"
+                        });
                 });
 
             modelBuilder.Entity("Tidskollen.Models.EmployeeProject", b =>

@@ -19,7 +19,7 @@ namespace Tidskollen.API.Services
 
         public async Task<IEnumerable<TimeReport>> GetAll()
         {
-            return await _tidContext.TimeReports.Include(e => e.Employee).ToListAsync();
+            return await _tidContext.TimeReports.ToListAsync();
         }
 
         public async Task<TimeReport> GetSingle(int id)
@@ -69,6 +69,18 @@ namespace Tidskollen.API.Services
                                 where tr.EmployeeId == employeeId && tr.CheckIn >= startDate && tr.CheckOut <= endDate
                                 select tr).ToListAsync();
             return await reportsToGet;  
+        }
+
+        public async Task<IEnumerable<TimeReport>> GetByName(string name)
+        {
+            return await _tidContext.TimeReports.Include(tr => tr.Employee)
+                .Where(e => e.Employee.FirstName == name || e.Employee.LastName == name)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TimeReport>> GetByEmpID(int employeeId)
+        {
+            return await _tidContext.TimeReports.Where(tr => tr.EmployeeId == employeeId).ToListAsync();
         }
 
         //public TimeReport CheckIn(TimeReport newTime, int empId)

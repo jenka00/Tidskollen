@@ -12,5 +12,6 @@ namespace Tidskollen.API.Services
         Task<T> Add(T newEntity);
         Task<T> Update(T Entity);
         Task<T> Delete(int id);
+        Task<IEnumerable<T>> GetByName(string name);
     }
 }

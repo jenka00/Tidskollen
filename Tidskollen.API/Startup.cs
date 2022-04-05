@@ -41,6 +41,8 @@ namespace Tidskollen.API
             services.AddScoped<ITidskollen<TimeReport>, TimeReportRepo>();
             services.AddScoped<ITimeReport, TimeReportRepo>();
             services.AddScoped<ITidskollen<EmployeeProject>, EmployeeProjectRepo>();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

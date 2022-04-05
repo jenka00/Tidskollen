@@ -23,28 +23,28 @@ namespace Tidskollen.API.Model
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Employee>().HasData(new Employee
-            {
-                EmployeeId = 1,
-                FirstName = "Therese",
-                LastName = "Brorsson",
-                DateOfBirth = new DateTime(1990,03,25)
-            });
+            //modelBuilder.Entity<Employee>().HasData(new Employee
+            //{
+            //    EmployeeId = 1,
+            //    FirstName = "Therese",
+            //    LastName = "Brorsson",
+            //    DateOfBirth = new DateTime(1990,03,25)
+            //});
 
-            modelBuilder.Entity<Employee>().HasData(new Employee
-            {
-                EmployeeId = 2,
-                FirstName = "Julia",
-                LastName = "Karlsson",
-                DateOfBirth = new DateTime(1987, 02, 28)
-            });
-            modelBuilder.Entity<Employee>().HasData(new Employee
-            {
-                EmployeeId = 3,
-                FirstName = "Louisa",
-                LastName = "Stark",
-                DateOfBirth = new DateTime(1985, 12, 09)
-            });
+            //modelBuilder.Entity<Employee>().HasData(new Employee
+            //{
+            //    EmployeeId = 2,
+            //    FirstName = "Julia",
+            //    LastName = "Karlsson",
+            //    DateOfBirth = new DateTime(1987, 02, 28)
+            //});
+            //modelBuilder.Entity<Employee>().HasData(new Employee
+            //{
+            //    EmployeeId = 3,
+            //    FirstName = "Louisa",
+            //    LastName = "Stark",
+            //    DateOfBirth = new DateTime(1985, 12, 09)
+            //});
             modelBuilder.Entity<Project>().HasData(new Project
             {
                 ProjectId = 1,

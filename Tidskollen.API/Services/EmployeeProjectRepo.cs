@@ -41,6 +41,11 @@ namespace Tidskollen.API.Services
             return await _tidContext.EmployeeProjects.ToListAsync();
         }
 
+        public Task<IEnumerable<EmployeeProject>> GetByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<EmployeeProject> GetSingle(int id)
         {
             return await _tidContext.EmployeeProjects.FirstOrDefaultAsync(p => p.EmployeeProjectId == id);
