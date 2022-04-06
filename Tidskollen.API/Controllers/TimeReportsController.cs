@@ -92,7 +92,7 @@ namespace Tidskollen.API.Controllers
                 {
                     return NotFound();
                 }                
-                return Ok(result);
+                return Ok(result.FirstOrDefault());
             }
             catch (Exception)
             {
