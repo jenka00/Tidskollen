@@ -28,3 +28,4 @@ The CheckOut time is then sat to DateTime.Now and the CheckStatus to false. This
 
 ## Links
 [Projekt Tidskollen Anrop till Postman](https://github.com/jenka00/Tidskollen/files/8426921/Projekt.Tidskollen.Anrop.till.Postman.pdf)
+[Beskrivning av uppgiften](https://qlok.notion.site/Projekt-Avancerad-NET-eb0527e709864272a6602afef06597b8)
