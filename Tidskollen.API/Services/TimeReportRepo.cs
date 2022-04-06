@@ -80,23 +80,8 @@ namespace Tidskollen.API.Services
 
         public async Task<IEnumerable<TimeReport>> GetByEmpID(int employeeId)
         {
-            return await _tidContext.TimeReports.Where(tr => tr.EmployeeId == employeeId).ToListAsync();
+            return await _tidContext.TimeReports.Where(tr => tr.EmployeeId == employeeId)
+                .Include(tr=>tr.Employee).ToListAsync();
         }
-
-        //public TimeReport CheckIn(TimeReport newTime, int empId)
-        //{
-        //     throw new NotImplementedException();
-        //var timeRepToAdd = (from time in _tidContext.TimeReports
-        //                          select new TimeReport
-        //                          {
-        //                              CheckIn = DateTime.Now,
-        //                              CheckStatus = true,
-        //                              EmployeeId = empId
-        //                          }).ToList();
-
-        //_tidContext.AddAsync(timeRepToAdd);
-        //_tidContext.SaveChangesAsync();
-        //return timeRepToAdd;
-        //}
     }
 }

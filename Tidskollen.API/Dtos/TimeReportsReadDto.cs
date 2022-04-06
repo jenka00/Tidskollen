@@ -18,6 +18,6 @@ namespace Tidskollen.API.Dtos
             }
         }
         public int EmployeeId { get; set; }
-        public EmployeeReadDto Employee { get; set; }
+        public EmployeeSimpleReadDto Employee { get; set; }
     }
 }

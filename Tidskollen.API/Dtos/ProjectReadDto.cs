@@ -12,5 +12,7 @@ namespace Tidskollen.API.Dtos
         public int ProjectId { get; set; }
 
         public string ProjectName { get; set; }
+
+        public ICollection<EmployeeProjectSimpleReadDto> EmployeeProject { get; set; }
     }
 }

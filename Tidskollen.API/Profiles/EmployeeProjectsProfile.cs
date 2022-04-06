@@ -13,6 +13,7 @@ namespace Tidskollen.API.Profiles
         public EmployeeProjectsProfile()
         {
             CreateMap<EmployeeProject, EmployeeProjectReadDto>();
+            CreateMap<EmployeeProject, EmployeeProjectSimpleReadDto>();
         }
     }
 }

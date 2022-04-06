@@ -14,6 +14,7 @@ namespace Tidskollen.API.Profiles
         {
             CreateMap<Employee, EmployeeReadDto>();
             CreateMap<EmployeeCreateDto, Employee>();
+            CreateMap<Employee, EmployeeSimpleReadDto>();
         }
     }
 }

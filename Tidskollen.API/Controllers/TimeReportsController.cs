@@ -91,7 +91,7 @@ namespace Tidskollen.API.Controllers
                 if (result == null)
                 {
                     return NotFound();
-                }
+                }                
                 return Ok(result);
             }
             catch (Exception)

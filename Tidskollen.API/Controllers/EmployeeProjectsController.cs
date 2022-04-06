@@ -58,7 +58,7 @@ namespace Tidskollen.API.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<EmployeeProject>> AddEmpPro(EmployeeProject newEmpPro)
+        public async Task<ActionResult<EmployeeProjectReadDto>> AddEmpPro(EmployeeProject newEmpPro)
         {
             try
             {
@@ -66,7 +66,8 @@ namespace Tidskollen.API.Controllers
                 {
                     return BadRequest();
                 }
-                var empProToCreate = await _tidskollen.Add(newEmpPro);
+                await _tidskollen.Add(newEmpPro);
+                var empProToCreate = _mapper.Map<EmployeeProjectReadDto>(newEmpPro); 
                 return CreatedAtAction(nameof(GetEmpPro), new
                 { id = empProToCreate.EmployeeProjectId }, empProToCreate);
             }

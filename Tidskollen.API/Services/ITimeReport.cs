@@ -9,7 +9,6 @@ namespace Tidskollen.API.Services
     public interface ITimeReport
     {
         Task <IEnumerable<TimeReport>> GetWorkHours(int employeeId, DateTime startDate, DateTime endDate);
-        Task <IEnumerable<TimeReport>> GetByEmpID(int employeeId);
-        //TimeReport CheckIn(TimeReport newTime, int id);
+        Task <IEnumerable<TimeReport>> GetByEmpID(int employeeId);        
     }
 }

@@ -18,12 +18,12 @@ namespace Tidskollen.API.Services
 
         public async Task<IEnumerable<Project>> GetAll()
         {
-            return await _tidContext.Projects.Include(ep => ep.EmployeeProject).ToListAsync();
+            return await _tidContext.Projects.Include(ep => ep.EmployeeProject).ThenInclude(ep=>ep.Employee).ToListAsync();
         }
 
         public async Task<Project> GetSingle(int id)
         {
-            return await _tidContext.Projects.Include(ep => ep.EmployeeProject)
+            return await _tidContext.Projects.Include(ep => ep.EmployeeProject).ThenInclude(ep => ep.Employee)
                 .FirstOrDefaultAsync(p => p.ProjectId == id);
         }
         public async Task<Project> Add(Project newProject)
