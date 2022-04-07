@@ -9,8 +9,7 @@ and the other one is a Rest-API called "Tidskollen.API" which depends on "Tidsko
 Tidskollen.Models contains four models: Employees, TimeReport, Project, and EmployeeProject (which is a junction table between Employees and Projects). 
 It's created as a class library to make it easy to be used it in other applications later on. 
 
-Tidskollen.API is constructed as a Rest-API and uses the principals of dependency injection. By using depedency injection, it's easy to add new models if
-this later on would be required. Tidskollen.API has two interfaces - ITidskollen and ITimeReport.
+Tidskollen.API is constructed as a Rest-API and uses the principals of repository pattern with dependency injection. By using the repository pattern, it makes it easy to (possibly in the future) swap out the data source without changing the whole API, and dependency injection makes it easy to add new models if this later on would be required. Tidskollen.API has two interfaces - ITidskollen and ITimeReport.
 ITidskollen is generic interface, which all the repositories for Employee, Project, EmployeeProject and TimeReport implements. Since the 
 requirements for the project where that the user should be able to Get All, Get single, Add, Update and Delete items from all the classes in Models, ITidskollen contains methods for this. 
 To meet the more specific requirement for the TimeReports, to be able to see timereports within a certain period of time, I created a new interface, ITimeReport, with a method for this. I also added another method in this interface, to get all timereports from one employee by taking the employee id as an in-parameter. TimeReport repository therefore implements both of these interfaces. 
